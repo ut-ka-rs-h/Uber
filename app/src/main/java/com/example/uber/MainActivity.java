@@ -2,7 +2,6 @@ package com.example.uber;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,10 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
-
 import com.parse.LogInCallback;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
@@ -23,10 +22,10 @@ import com.parse.SignUpCallback;
 public class MainActivity extends AppCompatActivity {
 
     enum State{
-        SIGNUP, LOGIN
+        LOGIN, SIGNUP
     }
 
-    private State state;
+    private State state = State.SIGNUP;
     private Button btnSignUp, btnOTL;
     private EditText edtUsername, edtPassword, edtChoice;
     private RadioButton rdbPassenger, rdbDriver;
@@ -35,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ParseInstallation.getCurrentInstallation().saveInBackground();
+        if (ParseUser.getCurrentUser() != null){
+            //ParseUser.logOut();
+            transitionToNextActivity();
+        }
 
         btnSignUp = findViewById(R.id.btnSignUp);
         btnOTL = findViewById(R.id.btnOTL);
@@ -48,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (state == State.SIGNUP){
-                    if (rdbDriver.isChecked() == false && rdbPassenger.isChecked() == false){
+                    if (!rdbDriver.isChecked() && !rdbPassenger.isChecked()){
                         Toast.makeText(MainActivity.this, "Are you a driver or passenger?", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else if (state == State.LOGIN){
-                    if (rdbDriver.isChecked() == false && rdbPassenger.isChecked() == false){
+                    if (!rdbDriver.isChecked() && !rdbPassenger.isChecked()){
                         Toast.makeText(MainActivity.this, "Are you a driver or passenger?", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -139,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     item.setTitle("Sign Up");
                     btnSignUp.setText("Login");
                 }
-                else {
+                else{
                     state = State.SIGNUP;
                     item.setTitle("Login");
                     btnSignUp.setText("Sign up");
