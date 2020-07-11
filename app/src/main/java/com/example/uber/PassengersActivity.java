@@ -1,11 +1,15 @@
 package com.example.uber;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -38,7 +43,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    private Button btnRequest;
+    private Button btnRequest, btnPasLogout;
 
     private boolean isRequestCancelled = true;
 
@@ -46,6 +51,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_passengers);
+
         setTitle("Passenger");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -53,7 +59,9 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
 
         btnRequest = findViewById(R.id.btnRequest);
+        btnPasLogout = findViewById(R.id.btnPasLogout);
         btnRequest.setOnClickListener(this);
+        btnPasLogout.setOnClickListener(this);
 
         ParseQuery<ParseObject> cabRequestQuery = ParseQuery.getQuery("RequestCab");
         cabRequestQuery.whereEqualTo("username", ParseUser.getCurrentUser().getUsername());
@@ -63,6 +71,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                 if (objects.size() > 0 && e == null){
                     isRequestCancelled = false;
                     btnRequest.setText("Cancel your request");
+                    btnRequest.setBackgroundColor(Color.RED);
                 }
             }
         });
@@ -93,13 +102,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                 (this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission
                         (this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             ActivityCompat.requestPermissions(PassengersActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1000);
         }
         else {
@@ -160,6 +163,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                                     Toast.makeText(PassengersActivity.this, "A cab request is sent", Toast.LENGTH_LONG).show();
 
                                     btnRequest.setText("Cancel your request");
+                                    btnRequest.setBackgroundColor(Color.RED);
                                     isRequestCancelled = false;
                                 }
                             }
@@ -179,6 +183,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                             if (requestList.size() > 0 && e == null){
                                 isRequestCancelled = true;
                                 btnRequest.setText("Request a new cab");
+                                btnRequest.setBackgroundColor(Color.parseColor("#009000"));
 
                                 for (ParseObject cabRequest : requestList){
                                     cabRequest.deleteInBackground(new DeleteCallback() {
@@ -196,6 +201,36 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                 }
 
                 break;
+
+            case R.id.btnPasLogout:
+                Toast.makeText(PassengersActivity.this, "Loggign Out", Toast.LENGTH_SHORT).show();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(PassengersActivity.this);
+                builder.setTitle("Logout");
+                builder.setMessage("Are you sure you want to logout?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ParseUser.logOutInBackground(new LogOutCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                Intent intent = new Intent(PassengersActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                builder.create();
+                builder.show();
+                break;
         }
     }
+
 }

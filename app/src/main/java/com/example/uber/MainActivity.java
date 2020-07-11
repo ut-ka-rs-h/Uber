@@ -79,10 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 else if (state == State.LOGIN){
-                    if (!rdbDriver.isChecked() && !rdbPassenger.isChecked()){
-                        Toast.makeText(MainActivity.this, "Are you a driver or passenger?", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
                     ParseUser.logInInBackground(edtUsername.getText().toString(), edtPassword.getText().toString(), new LogInCallback() {
                         @Override
                         public void done(ParseUser user, ParseException e) {
@@ -161,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             else if (ParseUser.getCurrentUser().get("as").equals("Driver")) {
-                Intent intent = new Intent(this, DriversActivity.class);
+                Intent intent = new Intent(this, DriverRequestList.class);
                 startActivity(intent);
             }
         }
