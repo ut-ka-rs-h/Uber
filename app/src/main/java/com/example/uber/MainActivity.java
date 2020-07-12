@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         if (ParseUser.getCurrentUser() != null){
             //ParseUser.logOut();
             transitionToNextActivity();
+            finish();
         }
 
         btnSignUp = findViewById(R.id.btnSignUp);
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseException e) {
                             if (e == null){
-                                Toast.makeText(MainActivity.this, ParseUser.getCurrentUser().getUsername() + " is signed up", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Hello " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_SHORT).show();
                                 transitionToNextActivity();
                                 finish();
                             }
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseUser user, ParseException e) {
                             if (user != null && e == null){
-                                Toast.makeText(MainActivity.this, ParseUser.getCurrentUser().getUsername() + " is logged in", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Hello " + ParseUser.getCurrentUser().getUsername(), Toast.LENGTH_SHORT).show();
                                 transitionToNextActivity();
                                 finish();
                             }

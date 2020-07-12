@@ -160,7 +160,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                             @Override
                             public void done(ParseException e) {
                                 if (e == null){
-                                    Toast.makeText(PassengersActivity.this, "A cab request is sent", Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(PassengersActivity.this, "A cab request is sent", Toast.LENGTH_LONG).show();
 
                                     btnRequest.setText("Cancel your request");
                                     btnRequest.setBackgroundColor(Color.RED);
@@ -190,7 +190,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                                         @Override
                                         public void done(ParseException e) {
                                             if (e == null){
-                                                Toast.makeText(PassengersActivity.this, "Request deleted:(", Toast.LENGTH_SHORT).show();
+//                                                Toast.makeText(PassengersActivity.this, "Request deleted:(", Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -203,7 +203,7 @@ public class PassengersActivity extends FragmentActivity implements OnMapReadyCa
                 break;
 
             case R.id.btnPasLogout:
-                Toast.makeText(PassengersActivity.this, "Loggign Out", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(PassengersActivity.this, "Logging Out", Toast.LENGTH_SHORT).show();
                 final AlertDialog.Builder builder = new AlertDialog.Builder(PassengersActivity.this);
                 builder.setTitle("Logout");
                 builder.setMessage("Are you sure you want to logout?");

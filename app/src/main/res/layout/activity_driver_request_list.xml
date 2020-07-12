@@ -9,19 +9,24 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="View passenger requests here..." />
+        android:background="#FFEB3B"
+        android:gravity="center"
+        android:text="Swipe down to get/update the requests list..."
+        android:textColor="#0B0A0A" />
 
-    <Button
-        android:id="@+id/btnGetRequests"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Get nearby requests" />
+        android:layout_height="match_parent">
 
-    <ListView
-        android:id="@+id/requestListView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <ListView
+            android:id="@+id/requestListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </LinearLayout>
