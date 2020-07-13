@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="top"
-        android:layout_weight="8"
+        android:layout_weight="5"
         tools:context=".PassengersActivity"></fragment>
 
     <LinearLayout
@@ -37,14 +37,26 @@
             android:visibility="visible" />
 
         <Button
+            android:id="@+id/btnBeep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#0000FF"
+            android:text="Beep Beep"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <Button
             android:id="@+id/btnPasLogout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#900000"
+            android:background="#FF0000"
             android:text="Logout"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
+
+
 
     </LinearLayout>
 

@@ -74,7 +74,7 @@ public class DriversActivity extends FragmentActivity implements OnMapReadyCallb
 
            LatLngBounds bounds = builder.build();
 
-           CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0);
+           CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 150);
            mMap.animateCamera(cameraUpdate);
 
     }
@@ -91,6 +91,8 @@ public class DriversActivity extends FragmentActivity implements OnMapReadyCallb
                     public void done(List<ParseObject> objects, ParseException e) {
                         if (objects.size() > 0 && e == null){
                             for (ParseObject cabRequest : objects){
+
+                                cabRequest.put("requestAccepted", true);
                                 cabRequest.put("driverOfMe", ParseUser.getCurrentUser().getUsername());
 
                                 cabRequest.saveInBackground(new SaveCallback() {
